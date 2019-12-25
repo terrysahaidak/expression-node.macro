@@ -3,70 +3,55 @@ const { E } = Animated;
 
 let a = () => null;
 
-Animated.E.multiply(a(), 12);
-Animated.E.startClock();
-Animated.E.multiply(
-  Animated.E.divide(distX, Animated.E.sub(endTime, startTime)),
-  1000,
-);
-Animated.E.block(
-  Animated.E.block([
-    Animated.E.cond(
-      Animated.E.eq(this.gestureState, State.ACTIVE),
-      Animated.E.block([
-        Animated.E.stopClock(this.clock),
-        Animated.E.set(
+E.multiply(a(), 12);
+E.startClock();
+E.multiply(E.divide(distX, E.sub(endTime, startTime)), 1000);
+E.block(
+  E.block([
+    E.cond(
+      E.eq(this.gestureState, State.ACTIVE),
+      E.block([
+        E.stopClock(this.clock),
+        E.set(
           this.transX,
-          Animated.E.add(
-            this.transX,
-            Animated.E.sub(this.dragX, this.prevDragX),
-          ),
+          E.add(this.transX, E.sub(this.dragX, this.prevDragX)),
         ),
-        Animated.E.set(this.prevDragX, this.dragX),
+        E.set(this.prevDragX, this.dragX),
         this.transX,
       ]),
-      Animated.E.cond(
-        Animated.E.or(
-          Animated.E.and(
-            Animated.E.neq(this.gestureState, -1),
-            Animated.E.neq(this.gestureState, 12),
+      E.cond(
+        E.or(
+          E.and(
+            E.neq(this.gestureState, -1),
+            E.neq(this.gestureState, 12),
           ),
-          Animated.E.eq(this.gestureState, 5),
+          E.eq(this.gestureState, 5),
         ),
-        Animated.E.block([
-          Animated.E.set(this.prevDragX, 0),
-          Animated.E.set(
+        E.block([
+          E.set(this.prevDragX, 0),
+          E.set(
             this.transX,
-            Animated.E.block([
-              Animated.E.cond(
-                Animated.E.defined(this.transX),
-                Animated.E.block([
-                  Animated.E.cond(
-                    Animated.E.eq(
-                      Animated.E.clockRunning(this.clock),
-                      0,
-                    ),
-                    Animated.E.block([
-                      Animated.E.set(this.animatedState.finished, 0),
-                      Animated.E.set(
-                        this.animatedState.velocity,
-                        this.dragVX,
-                      ),
-                      Animated.E.set(
-                        this.animatedState.position,
-                        this.transX,
-                      ),
-                      Animated.E.startClock(this.clock),
+            E.block([
+              E.cond(
+                E.defined(this.transX),
+                E.block([
+                  E.cond(
+                    E.eq(E.clockRunning(this.clock), 0),
+                    E.block([
+                      E.set(this.animatedState.finished, 0),
+                      E.set(this.animatedState.velocity, this.dragVX),
+                      E.set(this.animatedState.position, this.transX),
+                      E.startClock(this.clock),
                     ]),
                   ),
                 ]),
               ),
-              Animated.E.decay(this.clock, this.animatedState, {
+              E.decay(this.clock, this.animatedState, {
                 deceleration: 0.999,
               }),
-              Animated.E.cond(
+              E.cond(
                 this.animatedState.finished,
-                Animated.E.block([Animated.E.stopClock(this.clock)]),
+                E.block([E.stopClock(this.clock)]),
               ),
               this.animatedState.position,
             ]),
@@ -77,28 +62,27 @@ Animated.E.block(
   ]),
 );
 useOnFrameExpression(() => {
-  const normalizedPan = Animated.E.sub(panY, panYOffset);
+  const normalizedPan = E.sub(panY, panYOffset);
 
-  const min = (a, b) =>
-    Animated.E.cond(Animated.E.lessThan(a, b), a, b);
+  const min = (a, b) => E.cond(E.lessThan(a, b), a, b);
 
-  const canSwipeMore = Animated.E.and(
-    Animated.E.eq(gestureState, State.ACTIVE),
-    Animated.E.lessOrEq(scrollY, 0),
+  const canSwipeMore = E.and(
+    E.eq(gestureState, State.ACTIVE),
+    E.lessOrEq(scrollY, 0),
   );
-  return Animated.E.block(
-    Animated.E.block([
-      Animated.E.cond(
-        Animated.E.eq(gestureState, State.BEGAN),
-        Animated.E.block([Animated.E.set(panYOffset, scrollY)]),
+  return E.block(
+    E.block([
+      E.cond(
+        E.eq(gestureState, State.BEGAN),
+        E.block([E.set(panYOffset, scrollY)]),
       ),
-      Animated.E.cond(
+      E.cond(
         canSwipeMore,
-        Animated.E.block([
-          Animated.E.set(
+        E.block([
+          E.set(
             marginTop,
-            Animated.E.cond(
-              Animated.E.greaterOrEq(panY, 0),
+            E.cond(
+              E.greaterOrEq(panY, 0),
               min(MAX_OVERSCROLL, normalizedPan),
               0,
             ),

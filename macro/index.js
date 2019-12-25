@@ -10,7 +10,7 @@ module.exports = createMacro(expressionNodeMacro, {
 });
 
 function expressionNodeMacro({ references, state, babel, config }) {
-  const expressionNodeName = config.identifier || 'Animated';
+  const expressionNodeName = config.identifier || 'E';
 
   let identifier = null;
 
@@ -36,12 +36,7 @@ function expressionNodeMacro({ references, state, babel, config }) {
         'arguments',
       );
 
-      genericReplace(
-        argumentPath,
-        state,
-        babel,
-        identifier.name + '.E',
-      );
+      genericReplace(argumentPath, state, babel, identifier.name);
     } else {
       throw new Error(
         `expression-node.macro
