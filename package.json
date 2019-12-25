@@ -1,0 +1,31 @@
+{
+  "name": "expression-node.macro",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terrysahaidak/expression-node.macro.git"
+  },
+  "description": "Translate a javascript block to react native animated expressions.",
+  "main": "macro/index",
+  "scripts": {
+    "compile-test": "babel ./test/src/index.js --out-file ./test/out/index.js && prettier --write ./test/out/index.js"
+  },
+  "keywords": [
+    "babel-plugin-macros",
+    "reanimated",
+    "animated"
+  ],
+  "author": "Terry Sahaidak",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "core-js": "^3.5.0",
+    "prettier": "^1.19.1"
+  },
+  "dependencies": {
+    "babel-plugin-macros": "^2.8.0"
+  }
+}
