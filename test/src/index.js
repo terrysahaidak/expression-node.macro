@@ -4,6 +4,33 @@ const { E } = Animated;
 
 let a = () => null;
 
+useOnFrameExpression(() => {
+  const normalizedPan = x(panY - panYOffset);
+
+  const subtractTest = x(10 * 10 + 10 - 1 - 1 - 2 * (2 > 1 ? 2 : 1));
+
+  const min = (a, b) => x(a < b ? a : b);
+
+  const canSwipeMore = x(
+    gestureState === State.ACTIVE && scrollY <= 0,
+  );
+
+  return x(() => {
+    // memoize last panY value in order to subtract it later from the real panY
+    if (gestureState === State.BEGAN) {
+      panYOffset = scrollY + 1 + 2;
+      panYOffset = -1;
+    }
+
+    // check if the user has already scrolled all the way to the top
+    if (canSwipeMore) {
+      // if so - allow user to scroll more to the top
+      // in order to show the refresh controls
+      marginTop = panY >= 0 ? min(MAX_OVERSCROLL, normalizedPan) : 0;
+    }
+  });
+});
+
 x(a() * 12);
 x(startClock());
 
@@ -38,30 +65,4 @@ x(() => {
       this.animatedState.position;
     };
   }
-});
-
-useOnFrameExpression(() => {
-  const normalizedPan = x(panY - panYOffset);
-
-  const subtractTest = x(10 * 10 + 10 - 1 - 1 - 2 * (2 > 1 ? 2 : 1));
-
-  const min = (a, b) => x(a < b ? a : b);
-
-  const canSwipeMore = x(
-    gestureState === State.ACTIVE && scrollY <= 0,
-  );
-
-  return x(() => {
-    // memoize last panY value in order to subtract it later from the real panY
-    if (gestureState === State.BEGAN) {
-      panYOffset = scrollY;
-    }
-
-    // check if the user has already scrolled all the way to the top
-    if (canSwipeMore) {
-      // if so - allow user to scroll more to the top
-      // in order to show the refresh controls
-      marginTop = panY >= 0 ? min(MAX_OVERSCROLL, normalizedPan) : 0;
-    }
-  });
 });

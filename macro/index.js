@@ -169,17 +169,21 @@ const createHelper = (
       }
     },
     UnaryExpression(path) {
+      const node = path.node ? path.node : path;
+
       if (
-        path.node.operator === '-' &&
-        path.node.argument.type !== 'NumericLiteral'
+        node.operator === '-' &&
+        node.argument.type !== 'NumericLiteral'
       ) {
         // for unary minus operator: -var
         return babel.template('LIBRARY.METHOD(ARGUMENT, ARGUMENT2)')({
           LIBRARY: libraryIdentifier,
           METHOD: babel.types.identifier('multiply'),
-          ARGUMENT: path.node.argument,
+          ARGUMENT: node.argument,
           ARGUMENT2: '-1',
         }).expression;
+      } else {
+        return node;
       }
     },
     LogicalExpression(path) {

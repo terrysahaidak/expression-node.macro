@@ -3,6 +3,46 @@ const { E } = Animated;
 
 let a = () => null;
 
+useOnFrameExpression(() => {
+  const normalizedPan = E.sub(panY, panYOffset);
+  const subtractTest = E.sub(
+    E.add(E.multiply(10, 10), 10),
+    1,
+    1,
+    E.multiply(2, E.cond(E.greaterThan(2, 1), 2, 1)),
+  );
+
+  const min = (a, b) => E.cond(E.lessThan(a, b), a, b);
+
+  const canSwipeMore = E.and(
+    E.eq(gestureState, State.ACTIVE),
+    E.lessOrEq(scrollY, 0),
+  );
+  return E.block(
+    E.block([
+      E.cond(
+        E.eq(gestureState, State.BEGAN),
+        E.block([
+          E.set(panYOffset, E.add(scrollY, 1, 2)),
+          E.set(panYOffset, -1),
+        ]),
+      ),
+      E.cond(
+        canSwipeMore,
+        E.block([
+          E.set(
+            marginTop,
+            E.cond(
+              E.greaterOrEq(panY, 0),
+              min(MAX_OVERSCROLL, normalizedPan),
+              0,
+            ),
+          ),
+        ]),
+      ),
+    ]),
+  );
+});
 E.multiply(a(), 12);
 E.startClock();
 E.multiply(E.divide(distX, E.sub(endTime, startTime)), 1000);
@@ -61,40 +101,3 @@ E.block(
     ),
   ]),
 );
-useOnFrameExpression(() => {
-  const normalizedPan = E.sub(panY, panYOffset);
-  const subtractTest = E.sub(
-    E.add(E.multiply(10, 10), 10),
-    1,
-    1,
-    E.multiply(2, E.cond(E.greaterThan(2, 1), 2, 1)),
-  );
-
-  const min = (a, b) => E.cond(E.lessThan(a, b), a, b);
-
-  const canSwipeMore = E.and(
-    E.eq(gestureState, State.ACTIVE),
-    E.lessOrEq(scrollY, 0),
-  );
-  return E.block(
-    E.block([
-      E.cond(
-        E.eq(gestureState, State.BEGAN),
-        E.block([E.set(panYOffset, scrollY)]),
-      ),
-      E.cond(
-        canSwipeMore,
-        E.block([
-          E.set(
-            marginTop,
-            E.cond(
-              E.greaterOrEq(panY, 0),
-              min(MAX_OVERSCROLL, normalizedPan),
-              0,
-            ),
-          ),
-        ]),
-      ),
-    ]),
-  );
-});
