@@ -26,6 +26,7 @@ useOnFrameExpression(() => {
           E.set(panYOffset, E.add(scrollY, 1, 2)),
           E.set(panYOffset, -1),
         ]),
+        E.block([E.set(panYOffset, min(a, b))]),
       ),
       E.cond(
         canSwipeMore,

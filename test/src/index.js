@@ -20,6 +20,8 @@ useOnFrameExpression(() => {
     if (gestureState === State.BEGAN) {
       panYOffset = scrollY + 1 + 2;
       panYOffset = -1;
+    } else {
+      panYOffset = min(a, b);
     }
 
     // check if the user has already scrolled all the way to the top

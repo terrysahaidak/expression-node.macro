@@ -156,9 +156,12 @@ const createHelper = (
       );
     },
     CallExpression(path) {
-      const callee = path.node.callee;
+      const node = path.node ? path.node : path;
+
+      const callee = node.callee;
       if (
         callee.type === 'Identifier' &&
+        path.scope &&
         !path.scope.hasBinding(callee.name)
       ) {
         return babel.template('LIBRARY.METHOD(ARGUMENTS)')({
@@ -166,6 +169,8 @@ const createHelper = (
           METHOD: babel.types.identifier(callee.name),
           ARGUMENTS: path.node.arguments,
         }).expression;
+      } else {
+        return node;
       }
     },
     UnaryExpression(path) {
