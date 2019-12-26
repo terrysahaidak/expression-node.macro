@@ -130,16 +130,30 @@ const createHelper = (
         throw new Error('Operator is not defined: ' + node.operator);
       }
 
-      return babel.template(
-        'LIBRARY.METHOD(LEFT_EXPRESSION, RIGHT_EXPRESSION)',
-      )({
-        LIBRARY: libraryIdentifier,
-        METHOD: babel.types.identifier(
-          binaryOperators[node.operator],
+      let args = [];
+
+      function collectTheSameOperator(innerNode) {
+        args.unshift(innerNode.right);
+
+        if (
+          innerNode.left.type === 'BinaryExpression' &&
+          innerNode.left.operator === innerNode.operator
+        ) {
+          collectTheSameOperator(innerNode.left);
+        } else {
+          args.unshift(innerNode.left);
+        }
+      }
+
+      collectTheSameOperator(node);
+
+      return t.callExpression(
+        t.memberExpression(
+          t.identifier(libraryIdentifier),
+          t.identifier(binaryOperators[node.operator]),
         ),
-        LEFT_EXPRESSION: node.left,
-        RIGHT_EXPRESSION: node.right,
-      }).expression;
+        args,
+      );
     },
     CallExpression(path) {
       const callee = path.node.callee;

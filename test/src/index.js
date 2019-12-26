@@ -1,14 +1,15 @@
-import re from '../../macro';
+import x from '../../macro';
 import { Animated } from 'react-native';
 const { E } = Animated;
 
 let a = () => null;
-re(a() * 12);
-re(startClock());
 
-re((distX / (endTime - startTime)) * 1000);
+x(a() * 12);
+x(startClock());
 
-re(() => {
+x((distX / (endTime - startTime)) * 1000);
+
+x(() => {
   if (this.gestureState == State.ACTIVE) {
     stopClock(this.clock);
     this.transX = this.transX + (this.dragX - this.prevDragX);
@@ -40,15 +41,17 @@ re(() => {
 });
 
 useOnFrameExpression(() => {
-  const normalizedPan = re(panY - panYOffset);
+  const normalizedPan = x(panY - panYOffset);
 
-  const min = (a, b) => re(a < b ? a : b);
+  const subtractTest = x(10 * 10 + 10 - 1 - 1 - 2 * (2 > 1 ? 2 : 1));
 
-  const canSwipeMore = re(
+  const min = (a, b) => x(a < b ? a : b);
+
+  const canSwipeMore = x(
     gestureState === State.ACTIVE && scrollY <= 0,
   );
 
-  return re(() => {
+  return x(() => {
     // memoize last panY value in order to subtract it later from the real panY
     if (gestureState === State.BEGAN) {
       panYOffset = scrollY;

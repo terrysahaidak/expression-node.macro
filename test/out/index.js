@@ -63,6 +63,12 @@ E.block(
 );
 useOnFrameExpression(() => {
   const normalizedPan = E.sub(panY, panYOffset);
+  const subtractTest = E.sub(
+    E.add(E.multiply(10, 10), 10),
+    1,
+    1,
+    E.multiply(2, E.cond(E.greaterThan(2, 1), 2, 1)),
+  );
 
   const min = (a, b) => E.cond(E.lessThan(a, b), a, b);
 
