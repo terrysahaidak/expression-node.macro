@@ -209,6 +209,10 @@ const createHelper = (
     FunctionExpression(path) {
       return path.node.expression;
     },
+
+    ReturnStatement(path) {
+      return path.argument;
+    },
   };
 
   function handlePath(path) {
