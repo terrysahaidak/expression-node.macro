@@ -187,6 +187,14 @@ const createHelper = (
           ARGUMENT: node.argument,
           ARGUMENT2: '-1',
         }).expression;
+      } else if (node.operator === '!') {
+        return t.callExpression(
+          t.memberExpression(
+            t.identifier(libraryIdentifier),
+            t.identifier(binaryOperators[node.operator]),
+          ),
+          [node.argument],
+        );
       } else {
         return node;
       }
@@ -279,4 +287,5 @@ const binaryOperators = {
   '>=': 'greaterOrEq',
   '<': 'lessThan',
   '<=': 'lessOrEq',
+  '!': 'not',
 };
