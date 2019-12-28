@@ -114,14 +114,13 @@ const createHelper = (
       );
     },
     AssignmentExpression(path) {
-      return babel.template(
-        'LIBRARY.METHOD(LEFT_EXPRESSION, RIGHT_EXPRESSION)',
-      )({
-        LIBRARY: libraryIdentifier,
-        METHOD: 'set',
-        LEFT_EXPRESSION: path.node.left,
-        RIGHT_EXPRESSION: handlePath(path.node.right),
-      }).expression;
+      return t.callExpression(
+        t.memberExpression(
+          t.identifier(libraryIdentifier),
+          t.identifier('set'),
+        ),
+        [path.node.left, handlePath(path.node.right)],
+      );
     },
     BinaryExpression(path) {
       const node = path.node ? path.node : path;
@@ -220,6 +219,17 @@ const createHelper = (
 
     ReturnStatement(path) {
       return path.argument;
+    },
+
+    BooleanLiteral(path) {
+      if (path.value === true) {
+        console.log('True');
+        return t.numericLiteral(1);
+      } else if (path.value === false) {
+        return t.numericLiteral(0);
+      } else {
+        return path.value;
+      }
     },
   };
 
