@@ -54,15 +54,16 @@ const createHelper = (
 ) => {
   const visitor = {
     ArrowFunctionExpression(path) {
-      if (path == argumentPath) {
+      const node = path.node ? path.node : path;
+      if (node == argumentPath) {
         return babel.template('LIBRARY.METHOD(ARGS)')({
           LIBRARY: libraryIdentifier,
           METHOD: 'block',
-          ARGS: handlePath(path.get('body')),
+          ARGS: handlePath(node.body),
         }).expression;
       }
 
-      return handlePath(path.body);
+      return handlePath(node.body);
     },
     ExpressionStatement(path) {
       const node = path.node ? path.node : path;
