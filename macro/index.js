@@ -223,13 +223,14 @@ const createHelper = (
     },
 
     BooleanLiteral(path) {
-      if (path.value === true) {
-        console.log('True');
+      const node = path.node ? path.node : path;
+
+      if (node.value === true) {
         return t.numericLiteral(1);
-      } else if (path.value === false) {
+      } else if (node.value === false) {
         return t.numericLiteral(0);
       } else {
-        return path.value;
+        return node.value;
       }
     },
   };
